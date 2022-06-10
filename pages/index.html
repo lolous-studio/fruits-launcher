@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>LesFruits - Minecraft Launcher</title>
+	<link href="http://fonts.cdnfonts.com/css/segoe-ui-variable" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+			font-family: 'Montserrat', sans-serif;
+		}
+		body{
+			height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: #1D1D1D;
+		}
+		.signin-btn{
+			display: flex;
+			align-items: center;
+			padding: 12px;
+			width: auto;
+
+			font-family: 'Segoe UI Variable', sans-serif;
+			color: #FFFFFF;
+			font-weight: 600;
+			font-size: 15px;
+
+			background-color: #2F2F2F;
+			cursor: pointer;
+			z-index: 1;
+		}
+		.signin-btn img{
+			margin-right: 12px;
+		}
+		.signin-popup{
+			position: fixed;
+			z-index: 10;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: rgba(0, 0, 0, .5);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.signin-popup>div{
+			background-color: #2B2B2B;
+			border-radius: 15px;
+			border: none;
+			width: calc(400px - 50px);
+			height: calc(500px - 50px);
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			padding: 50px;
+			text-align: center;
+		}
+		.signin-popup h1{
+			margin-top: 15px;
+			font-weight: bolder;
+			color: rgba(255, 255, 255, 1);
+		}
+		.signin-popup h2{
+			font-weight: normal;
+			color: rgba(255, 255, 255, .75);
+		}
+		.signin-popup>div>img{
+			border-radius: 50%;
+		}
+	</style>
+</head>
+<body>
+	<div class="signin-btn" id="js-signin-btn"><img src="https://docs.microsoft.com/en-us/azure/active-directory/develop/media/howto-add-branding-in-azure-ad-apps/ms-symbollockup_mssymbol_19.svg"><p>Sign in with Microsoft</p></div>
+	<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+	<script type="text/javascript">
+		function httpGetAsync(theUrl, callback) {
+		    var xmlHttp = new XMLHttpRequest();
+		    xmlHttp.onreadystatechange = function() { 
+		        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+		            callback(xmlHttp.responseText);
+		    }
+		    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+		    xmlHttp.send(null);
+		}
+
+		document.querySelector("#js-signin-btn").onclick = ()=>{
+			var left = (screen.width/2)-(500/2);
+			var top = (screen.height/2)-(600/2);
+			var popup = window.open('/auth','Login with Microsoft','height=600,width=500,left='+left+',top='+top+',resizable=no,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');
+			document.body.innerHTML += `<div class="signin-popup"><div></div></div>`;
+			var loop = setInterval(function() {   
+				if(popup.closed) {  
+					clearInterval(loop);  
+					httpGetAsync(`/api/v1/user/me?MCtoken=${localStorage.MCtoken}`, (data)=>{
+						data = JSON.parse(data);
+						localStorage.pseudo = data.name;
+						httpGetAsync(`/api/v1/user/me/pfp?MCtoken=${localStorage.MCtoken}`, (data)=>{
+							data = JSON.parse(data);
+							localStorage.pfp = data.head;
+							document.querySelector('.signin-popup>div').innerHTML = `<img src="data:image/png;base64,${localStorage.pfp}"></img><h1>${localStorage.pseudo}</h1><h2>Welcome back !</h2>`;
+						});
+					});
+				}  
+			}, 1000);
+		}
+	</script>
+</body>
+</html>
