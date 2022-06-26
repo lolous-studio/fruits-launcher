@@ -248,7 +248,10 @@ let opts = {
     }
 }
 
-launcher.launch(opts);
+app.get("/api/v1/launch/:versionname", (req, res)=>{
+  launcher.launch(opts);
+});
+
 launcher.on('debug', (e) => console.log("[DEBUG]" + e));
 launcher.on('data', (e) => console.log("[DATA]" + e));
 launcher.on('error', (e) => console.log("[ERROR]" + e));
