@@ -84,6 +84,10 @@ app.get('/api/v1/user/me/pfp', (req, res) => {
 
 // https://api.minecraftservices.com/minecraft/profile
 
+app.get('/healthz', (req, res) => {
+  res.sendStatus(200);
+});
+
 app.get('/auth/failed', (req, res) => {
   if (!req.query.error){
     res.send(`<h1>Oups... something went wrong :/</h1><p>Looks like you tried to connect to your microsoft account and it saddly failed in an unknown way...</p>`);
