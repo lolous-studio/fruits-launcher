@@ -5,7 +5,7 @@ const port = 1992;
 
 app.use(cors());
 var corsOptions = {
-  origin: '*',
+  origin: 'fruits.lolous.studio, localhost',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
