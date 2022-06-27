@@ -6,6 +6,7 @@ const port = 4000;
 const app_id = "19b827cd-b22d-4417-9e99-38c4bfc5e256";
 const app_secret = "Qsn8Q~5XPat5NyPTq1zEitudVKl9CuTvZu0dPbY3";
 const app_id_secret = "ae388251-a757-41b4-95b1-a88e3def402d";
+// const redirect_uri = "http://localhost:3000/redirect";
 const redirect_uri = "https://fruits.lolous.studio/redirect";
 
 app.get('/', (req, res) => {
