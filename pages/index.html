@@ -8,24 +8,23 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	<script src="https://unpkg.com/phosphor-icons"></script>
 	<style type="text/css">
 		*{
 			margin: 0;
 			padding: 0;
 			font-family: 'Montserrat', sans-serif;
+			color: white;
 		}
 		body{
-			height: 100vh;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background-color: #1D1D1D;
+			background-color: #121212;
 		}
 		.signin-btn{
 			display: flex;
 			align-items: center;
 			padding: 12px;
 			width: auto;
+			margin-right: 15px;
 
 			font-family: 'Segoe UI Variable', sans-serif;
 			color: #FFFFFF;
@@ -50,6 +49,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			backdrop-filter: blur(15px);
 		}
 		.signin-popup>div{
 			background-color: #2B2B2B;
@@ -63,6 +63,7 @@
 			flex-direction: column;
 			padding: 50px;
 			text-align: center;
+			position: relative;
 		}
 		.signin-popup h1{
 			margin-top: 15px;
@@ -76,10 +77,424 @@
 		.signin-popup>div>img{
 			border-radius: 50%;
 		}
+		.app{
+			position: fixed;
+			top: 0;
+			right: 0;
+			left: 0;
+			bottom: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.left-nav{
+			width: 250px;
+			height: calc(100% - 50px);
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-start;
+			padding: 25px 10px;
+		}
+		.right-content{
+			width: calc(100% - 250px);
+			height: 100%;
+			margin-top: 50px;
+		}
+		.top-nav{
+			width: 100%;
+			height: 80px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 25px;
+			position: sticky;
+			top: 25px;
+			background-color: #121212;
+			z-index: 100;
+		}
+		.top-nav>div{
+			display: flex;
+			align-items: center;
+		}
+		.top-nav i{
+			font-size: 25px;
+		}
+		h1{
+			margin-bottom: 25px;
+		}
+		p.card{
+			padding: 25px 25px;
+			width: calc(100% - 50px);
+			display: flex;
+			align-items: center;
+			color: rgba(255, 255, 255, .75);
+			border-radius: 5px;
+			cursor: pointer;
+			margin-bottom: 5px;
+			transition-duration: .25s;
+		}
+		p.card i{
+			color: rgba(255, 255, 255, .75);
+			font-size: 25px;
+			margin-right: 25px;
+			transition-duration: .25s;
+		}
+		p.card.active{
+			background-color: rgba(255, 255, 255, .10);
+			color: white;
+		}
+		p.card:hover{
+			background-color: rgba(255, 255, 255, .15);
+			color: white;
+		}
+		p.card:hover i, p.card.active i{
+			color: white;
+		}
+		input{
+			padding: 15px 15px;
+			border-radius: 90px;
+			border: none;
+			background-color: rgba(255, 255, 255, .15);
+			outline: none;
+			margin-left: 15px;
+			transition-duration: .25s;
+			width: 250px;
+		}
+		input:focus{
+			background-color: rgba(255, 255, 255, .25);
+		}
+		input::placeholder{
+			color: white;
+			opacity: 1;
+		}
+		p.card img{
+			height: 25px;
+			width: 25px;
+			margin-right: 25px;
+			object-fit: cover;
+			object-position: center;
+			background-color: rgba(255, 255, 255, .15);
+			border-radius: 5px;
+		}
+		h2.quick-launch{
+			font-size: 17px;
+			width: calc(100% - 30px);
+			font-variant: all-petite-caps;
+			margin-top: 40px;
+			margin-bottom: 10px;
+			padding-left: 15px;
+		}
+		.header{
+			display: flex;
+		}
+		.header .banner{
+			width: calc(100% - 250px);
+			height: 500px;
+			border-radius: 15px;
+			background-position: center;
+			background-size: cover;
+			cursor: pointer;
+			background-color: grey;
+			overflow: hidden;
+			transition-duration: .25s;
+		}
+		.header .banners-list{
+			width: 220px;
+			padding: 0 15px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			flex-direction: column;
+		}
+		.header .banners-list p{
+			border-radius: 15px;
+		}
+		.header .banner .content{
+			width: 500px;
+			height: calc(100% - 50px);
+			padding: 25px;
+			background: transparent;
+			background: linear-gradient(90deg, rgba(0,0,0,.75) 0%, rgba(0,0,0,0) 100%);
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: flex-end;
+		}
+		.header .banner .content img{
+			width: 75%;
+			max-height: 25%;
+			object-fit: contain;
+			object-position: center left;
+			transition-duration: .25s;
+		}
+		.header .banner .content h2{
+			font-size: 17px;
+			width: 100%;
+			font-variant: all-petite-caps;
+			margin-top: 40px;
+			margin-bottom: 10px;
+		}
+		.btn-group{
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: flex-start;
+		}
+		.main-btn{
+			border: none;
+			color: black;
+			background-color: white;
+			border-radius: 5px;
+			padding: 15px 25px;
+			font-variant-caps: all-petite-caps;
+			font-size: 15px;
+			margin-top: 15px;
+			font-weight: bold;
+			cursor: pointer;
+			margin-right: 10px;
+		}
+		.sec-btn i, .main-btn i{
+			font-size: 25px;
+			margin-right: 15px;
+		}
+		.sec-btn{
+			border: none;
+			color: white;
+			background-color: transparent;
+			border-radius: 5px;
+			padding: 15px 25px;
+			font-variant-caps: all-petite-caps;
+			font-size: 15px;
+			margin-top: 15px;
+			font-weight: bold;
+			cursor: pointer;
+			margin-right: 10px;
+			transition-duration: .25s;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.sec-btn:hover{
+			background-color: rgba(255, 255, 255, .15);
+		}
+		#bannerDescription{
+			width: 100%;
+		}
+		.accent-btn{
+			border: none;
+			color: white;
+			background-color: dodgerblue;
+			border-radius: 5px;
+			padding: 15px 25px;
+			font-variant-caps: all-petite-caps;
+			font-size: 15px;
+			margin-top: 15px;
+			font-weight: bold;
+			cursor: pointer;
+			margin-right: 10px;
+			transition-duration: .25s;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.accent-btn i{
+			margin-right: 15px;
+		}
+		.accent-btn:hover{
+			background-color: #1564b2;
+		}
+		.thrd-btn{
+			border: none;
+			color: white;
+			background-color: #2F2F2F;
+			border-radius: 5px;
+			padding: 15px 25px;
+			font-variant-caps: all-petite-caps;
+			font-size: 15px;
+			margin-top: 15px;
+			font-weight: bold;
+			cursor: pointer;
+			margin-right: 10px;
+			transition-duration: .25s;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.thrd-btn i{
+			margin-right: 15px;
+		}
+		.thrd-btn:hover{
+			background: #555555;
+		}
+		.tab{
+			display: none;
+			overflow-Y: scroll;
+			padding-bottom: 100px;
+		}
+		.tab.display{
+			display: initial;
+		}
+		.showOnLoggedIn{
+			display: none;
+		}
+		.category{
+			margin-top: 100px;
+		}
+		.category h3{
+			color: white;
+			text-transform: capitalize;
+			font-size: 15px;
+			display: flex;
+			align-items: center;
+			cursor: pointer;
+			margin-bottom: 15px;
+		}
+		.category h3 i{
+			margin-left:7px;
+			font-size: 15px;
+			transition-duration: .25s;
+		}
+		.category h3:hover i{
+			margin-left:10px;
+		}
+		.application{
+			width: calc(100% - 50px);
+			aspect-ratio: 3/4;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-end;
+			padding-bottom: 15px;
+			border-radius: 15px;
+			background-position: center;
+			background-size: cover;
+			position: relative;
+			overflow: hidden;
+			cursor: pointer;
+		}
+		.application .hover{
+			opacity: 0;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: rgb(0,0,0);
+			background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+			transition-duration: .25s;
+			opacity: .75;
+			z-index: 0;
+		}
+		.app-container:hover .application .hover{
+			opacity: 1;
+		}
+		.application img{
+			width: calc(100% - 15px);
+			max-height: 25%;
+			object-fit: contain;
+			object-position: center;
+			z-index: 5;
+		}
+		.app-container{
+			display: flex;
+			flex-direction: column;
+			cursor: pointer;
+			width: calc(100% - 50px);
+		}
+		.app-container h2{
+			font-weight: normal;
+			margin-top: 10px;
+			width: 100%;
+			font-size: 20px;
+		} 
+		.app-container .prices p{
+			color: rgba(255, 255, 255, .5);
+		}
+		.apps{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
 	</style>
 </head>
 <body>
-	<div class="signin-btn" id="js-signin-btn"><img src="https://docs.microsoft.com/en-us/azure/active-directory/develop/media/howto-add-branding-in-azure-ad-apps/ms-symbollockup_mssymbol_19.svg"><p>Sign in with Microsoft</p></div>
+	<div class="app">
+		<div class="left-nav">
+			<h1>FruitsMC</h1>
+			<p class="card active" onclick="switchTab('shop', this)"><i class="ph-storefront"></i>Boutique</p>
+			<p class="card" onclick="switchTab('library', this)"><i class="ph-books"></i>Bibliothèque</p>
+			<p class="card" onclick="switchTab('creaMC', this)"><i class="ph-pencil-circle"></i>CreaMC Engine</p>
+			<h2 class="quick-launch">lancement rapide</h2>
+			<p class="card"><img src="https://www.feed-the-beast.com/img/ftb-avatar-logo.c7da2642.png">FTB Ultimate</p>
+			<p class="card"><img src="https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg">Forge 1.12</p>
+			<p class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU">Minecraft 1.19</p>
+		</div>
+		<div class="right-content tab display" id="shop">
+			<div class="top-nav">
+				<div class="left">
+					<i class="ph-caret-left"></i>
+					<input type="text" placeholder="Rechercher dans la boutique">
+				</div>
+				<div class="right">
+					<button class="accent-btn deleteOnReach" style="margin-top: 0;"><i class="ph-download-simple"></i>Download MC-Link</button>
+					<button class="thrd-btn deleteOnLoggedIn" style="margin-top: 0;" id="js-signin-btn"><img style="margin-right: 15px; height: 25px;" src="https://docs.microsoft.com/en-us/azure/active-directory/develop/media/howto-add-branding-in-azure-ad-apps/ms-symbollockup_mssymbol_19.svg"><p>Sign in with Microsoft</p></button>
+					<button class="showOnLoggedIn thrd-btn" id="userProfile" style="margin-top: 0;"></button>
+				</div>
+			</div>
+
+			<div class="header">
+				<div class="banner">
+					<div class="content">
+						<img id="bannerLogo">
+						<h2 id="bannerGameState"></h2>
+						<p id="bannerDescription"></p>
+						<div class="btn-group">
+							<button id="bannerBtn" class="main-btn">Loading...</button>
+							<button class="sec-btn"><i class="ph-plus-circle"></i>Ajouter à la liste de souhaits</button>
+						</div>
+					</div>
+				</div>
+				<div class="banners-list">
+					<p onclick="showBanner(0, this)" class="card active"><img src=""></p>
+					<p onclick="showBanner(1, this)" class="card"><img src="https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg">Forge 1.12</p>
+					<p onclick="showBanner(2, this)" class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU">Minecraft 1.19.2</p>
+					<p onclick="showBanner(3, this)" class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU">Minecraft 1.17</p>
+					<p onclick="showBanner(4, this)" class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU">Minecraft 1.12</p>
+				</div>
+			</div>
+
+			<div class="category">
+				<h3>Free content<i class="ph-caret-right"></i></h3>
+				<div class="apps" id="freeContent"></div>
+			</div>
+		</div>
+
+		<div class="right-content tab" id="library">
+			<div class="top-nav">
+				<div class="left">
+					<i class="ph-caret-left"></i>
+					<input type="text" placeholder="Rechercher dans la bibliothèque">
+				</div>
+				<div class="right">
+					<button class="accent-btn deleteOnReach" style="margin-top: 0;"><i class="ph-download-simple"></i>Download MC-Link</button>
+					<button class="thrd-btn deleteOnLoggedIn" style="margin-top: 0;" id="js-signin-btn"><img style="margin-right: 15px; height: 25px;" src="https://docs.microsoft.com/en-us/azure/active-directory/develop/media/howto-add-branding-in-azure-ad-apps/ms-symbollockup_mssymbol_19.svg"><p>Sign in with Microsoft</p></button>
+					<button class="showOnLoggedIn thrd-btn" id="userProfile" style="margin-top: 0;"></button>
+				</div>
+			</div>
+
+			<div class="unreachable deleteOnReach" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+				<h1 style="margin: 10px 0;">Oups...</h1>
+				<p style="margin: 0 0 25px 0; opacity: .75; width: 500px; text-align: center;">Looks like Mc-Link isn't installed or running. Run Mc-Link or if you don't have it yet:</p>
+				<button class="accent-btn" style="margin-top: 0;"><i class="ph-download-simple"></i>Download MC-Link</button>
+			</div>
+		</div>
+
+		<div class="right-content tab" id="creaMC">
+		</div>
+	</div>
+
 	<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 	<script type="text/javascript">
 		function httpGetAsync(theUrl, callback) {
@@ -90,6 +505,89 @@
 		    }
 		    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
 		    xmlHttp.send(null);
+		}
+
+		if (localStorage.MCtoken && localStorage.pseudo && localStorage.pfp) {
+			document.querySelectorAll(".deleteOnLoggedIn").forEach((elem)=>{
+				elem.parentNode.removeChild(elem);
+			});
+			document.querySelectorAll(".showOnLoggedIn").forEach((elem)=>{
+				elem.style.display = "flex";
+			});
+			document.querySelectorAll("#userProfile").forEach((elem)=>{
+				elem.innerHTML = `<img style="margin-right: 15px; height: 25px;" src="data:image/png;base64,${localStorage.pfp}">${localStorage.pseudo}`;
+			});
+		}
+
+		httpGetAsync("/api/v1/store/freeContent", (body)=>{
+			body = JSON.parse(body);
+			body.forEach((elem, index, arr)=>{
+				if (index < 6) {
+					document.querySelector("#freeContent").innerHTML += `<div class="app-container">
+						<div class="application" style="background-image: url('${elem.banner}');">
+							<img src="${elem.logo}">
+							<div class="hover"></div>
+						</div>
+						<h2>${elem.title}</h2>
+						<div class="prices"><p>FREE</p></div>
+					</div>`;
+				}
+			});
+		});
+
+		httpGetAsync("http://localhost:1992", (data)=>{
+			document.querySelectorAll(".deleteOnReach").forEach((elem)=>{
+				elem.parentNode.removeChild(elem);
+			});
+		});
+
+		function switchTab(tabId, elem){
+			document.querySelector(".left-nav .active").classList.remove("active");
+			elem.classList.add("active");
+			document.querySelector(".display").classList.remove("display");
+			document.querySelector("#" + tabId).classList.add("display");
+		}
+
+		let banners = [];
+		httpGetAsync("/api/v1/store/banners", (body)=>{
+			body = JSON.parse(body);
+			banners = body;
+
+			document.querySelector(".banner").style.backgroundImage = `url(${body[0].banner})`;
+			document.querySelector("#bannerGameState").innerText = body[0].gameStat;
+			document.querySelector("#bannerLogo").src = body[0].logo;
+			document.querySelector("#bannerDescription").innerText = body[0].description;
+			document.querySelector("#bannerBtn").innerText = body[0].btnText;
+
+			bannersList = document.querySelectorAll(".banners-list .card");
+			bannersList.forEach((elem, index, arr)=>{
+				console.log(body[index]);
+				elem.innerHTML = `<img src="${body[index].icon}">${body[index].title}`;
+			});
+		});
+
+		function showBanner(nb, elem){
+			document.querySelector(".header .banner").style.opacity = 0;
+			document.querySelector(".header .banners-list p.active").classList.remove("active");
+			document.querySelector(".header .banner").style.transform = "translateY(10px)";
+			document.querySelector("#bannerLogo").style.transform = "translateY(10px)";
+			document.querySelector("#bannerLogo").style.opacity = 0;
+			elem.classList.add("active");
+			setTimeout(()=>{
+				document.querySelector("#bannerLogo").style.transform = "translateY(-10px)";
+				document.querySelector(".header .banner").style.transform = "translateY(-10px)";
+				document.querySelector(".banner").style.backgroundImage = `url(${banners[nb].banner})`;
+				document.querySelector("#bannerGameState").innerText = banners[nb].gameStat;
+				document.querySelector("#bannerLogo").src = banners[nb].logo;
+				document.querySelector("#bannerDescription").innerText = banners[nb].description;
+				document.querySelector("#bannerBtn").innerText = banners[nb].btnText;
+				setTimeout(()=>{
+					document.querySelector("#bannerLogo").style.transform = "translateY(0px)";
+					document.querySelector(".header .banner").style.transform = "translateY(0px)";
+				document.querySelector("#bannerLogo").style.opacity = 1;
+					document.querySelector(".header .banner").style.opacity = 1;
+				}, 250);
+			}, 250);
 		}
 
 		document.querySelector("#js-signin-btn").onclick = ()=>{
@@ -106,7 +604,7 @@
 						httpGetAsync(`/api/v1/user/me/pfp?MCtoken=${localStorage.MCtoken}`, (data)=>{
 							data = JSON.parse(data);
 							localStorage.pfp = data.head;
-							document.querySelector('.signin-popup>div').innerHTML = `<img src="data:image/png;base64,${localStorage.pfp}"></img><h1>${localStorage.pseudo}</h1><h2>Welcome back !</h2>`;
+							document.querySelector('.signin-popup>div').innerHTML = `<img src="data:image/png;base64,${localStorage.pfp}"></img><h1>${localStorage.pseudo}</h1><h2>Welcome back !</h2><button onclick="location.reload()" class="accent-btn" style="margin: 0;position:absolute;bottom: 10px;width	:calc(100% - 20px);">Continue<i class="ph-caret-right" style="margin:0;margin-left:15px;"></i></button>`;
 						});
 					});
 				}  

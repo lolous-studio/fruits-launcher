@@ -119,6 +119,27 @@ app.get('/redirect', (req, res) => {
     });
 });
 
+app.get('/api/v1/store/banners', (req, res) => {
+  res.send([
+    {title:"Forge 1.12", btnText:"Jouer gratuitement", banner:"https://i.pinimg.com/originals/12/f2/d8/12f2d843f320e42a7712bb806dc20970.jpg", logo:"https://files.minecraftforge.net/static/images/logo.svg", icon:"https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg", description:"Customize how your minecraft look and behave with the help of forge! Install mods to make your Minecraft feel like yours.", gameStat:"disponible et gratuit"},
+    {title:"Minecraft 1.19", btnText:"Jouer gratuitement", banner:"https://minecraft-tutos.com/wp-content/uploads/2022/03/concept-art-minecraft-biome-swamp-mangrove-1024x475.jpeg", logo:"https://www.minecraft-france.fr/wp-content/uploads/2021/10/Minecraft_1.19_Wild_Update_Logo-768x218.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Lancez-vous dans l’aventure, flânez sans but ou cherchez les nouveautés dans The Wild Update ! Une infinité de choix s’offrent à vous.", gameStat:"Nouveauté gratuite"},
+    {title:"Forge 1.13", btnText:"Jouer gratuitement", banner:"https://www.teahub.io/photos/full/41-419000_minecraft-seus-shader.jpg", logo:"https://files.minecraftforge.net/static/images/logo.svg", icon:"https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg", description:"Customize how your minecraft look and behave with the help of forge! Install mods to make your Minecraft feel like yours.", gameStat:"populaire et gratuit"},
+    {title:"FTB Ultimate", btnText:"Jouer gratuitement", banner:"https://wallpaper.dog/large/17064778.png", logo:"https://www.feed-the-beast.com/img/logo_ftb.417506fa.png", icon:"https://www.feed-the-beast.com/img/ftb-avatar-logo.c7da2642.png", description:"With a perfect blend of tech and magic, Ultimate provid millions of players the opportunity to play either solo or with friends and explore new worlds and dimensions as well as build massive bases filled with technological and magical constructs.", gameStat:"disponible et gratuit"},
+    {title:"Minecraft 1.18", btnText:"Jouer gratuitement", banner:"https://upload.fr-minecraft.net/images/frminecraft/fr-minecraft_RFBY_caves-cliffs-update-part-i-official-trailer-mp4-snapshot-00-.jpg", logo:"https://minecraft.fr/wp-content/uploads/2020/06/minecraft-1-17-cave-grotte-falaise.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Découvrez des montagnes, des caves et des biomes plus grands, ainsi qu’une hauteur de monde augmentée et qu’une mise à jour de la génération de terrain dans la mise à jour Cavernes et falaises.", gameStat:"disponible et gratuit"},
+  ]);
+});
+
+app.get('/api/v1/store/freeContent', (req, res) => {
+  res.send([
+    {title:"Minecraft 1.19", btnText:"Jouer gratuitement", banner:"https://minecraft-tutos.com/wp-content/uploads/2022/03/concept-art-minecraft-biome-swamp-mangrove-1024x475.jpeg", logo:"https://www.minecraft-france.fr/wp-content/uploads/2021/10/Minecraft_1.19_Wild_Update_Logo-768x218.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Lancez-vous dans l’aventure, flânez sans but ou cherchez les nouveautés dans The Wild Update ! Une infinité de choix s’offrent à vous.", gameStat:"disponible et gratuit"},
+    {title:"Minecraft 1.18", btnText:"Jouer gratuitement", banner:"https://upload.fr-minecraft.net/images/frminecraft/fr-minecraft_RFBY_caves-cliffs-update-part-i-official-trailer-mp4-snapshot-00-.jpg", logo:"https://minecraft.fr/wp-content/uploads/2020/06/minecraft-1-17-cave-grotte-falaise.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Découvrez des montagnes, des caves et des biomes plus grands, ainsi qu’une hauteur de monde augmentée et qu’une mise à jour de la génération de terrain dans la mise à jour Cavernes et falaises.", gameStat:"disponible et gratuit"},
+    {title:"Minecraft 1.12", btnText:"Jouer gratuitement", banner:"https://minecraft.fr/wp-content/uploads/2017/06/b1c06cfe1e13734b3da8912f424e75ac-mc112_header.png", logo:"https://upload.wikimedia.org/wikipedia/fr/thumb/0/03/Minecraft_Logo.svg/1200px-Minecraft_Logo.svg.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Sunlight yellow, chili red, royal blue, midnight black, grass green, lilac purple, true lime, fresh salmon, hot cappuccino, pretty much all of the off-white, annoying cyan, alpha-tested magenta, that brown-greenish barf shade... the World of Color update is here!", gameStat:"disponible et gratuit"},
+    {title:"Forge 1.13", btnText:"Jouer gratuitement", banner:"https://www.teahub.io/photos/full/41-419000_minecraft-seus-shader.jpg", logo:"https://files.minecraftforge.net/static/images/logo.svg", icon:"https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg", description:"Customize how your minecraft look and behave with the help of forge! Install mods to make your Minecraft feel like yours.", gameStat:"disponible et gratuit"},
+    {title:"Forge 1.12", btnText:"Jouer gratuitement", banner:"https://i.pinimg.com/originals/12/f2/d8/12f2d843f320e42a7712bb806dc20970.jpg", logo:"https://files.minecraftforge.net/static/images/logo.svg", icon:"https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg", description:"Customize how your minecraft look and behave with the help of forge! Install mods to make your Minecraft feel like yours.", gameStat:"disponible et gratuit"},
+    {title:"FTB Ultimate", btnText:"Jouer gratuitement", banner:"https://wallpaper.dog/large/17064778.png", logo:"https://www.feed-the-beast.com/img/logo_ftb.417506fa.png", icon:"https://www.feed-the-beast.com/img/ftb-avatar-logo.c7da2642.png", description:"With a perfect blend of tech and magic, Ultimate provid millions of players the opportunity to play either solo or with friends and explore new worlds and dimensions as well as build massive bases filled with technological and magical constructs.", gameStat:"disponible et gratuit"},
+  ]);
+});
+
 function XBLauth(access_token, callback){
   axios
     .post(`https://user.auth.xboxlive.com/user/authenticate`, 
@@ -207,60 +228,4 @@ function checkMinecraftOwnership(MC_access_token, callback){
 
 app.listen(port, () => {
   console.log(`Fruits listening on port ${port}`);
-});
-
-
-
-
-
-
-
-
-
-
-const { Client, Authenticator } = require('minecraft-launcher-core');
-const { uuid } = require('uuidv4');
-const launcher = new Client();
-
-MCuuid = uuid();
-const user = {
-  access_token: "eyJhbGciOiJIUzI1NiJ9.eyJ4dWlkIjoiMjUzNTQ2MzkzNjg0NDM5NiIsImFnZyI6IkFkdWx0Iiwic3ViIjoiMzE4Nzg2MDgtNzI1NS00MGZhLTg2OGMtZjVhNWQxZDAxMjc5IiwibmJmIjoxNjU0NjM1MDY5LCJhdXRoIjoiWEJPWCIsInJvbGVzIjpbXSwiaXNzIjoiYXV0aGVudGljYXRpb24iLCJleHAiOjE2NTQ3MjE0NjksImlhdCI6MTY1NDYzNTA2OSwicGxhdGZvcm0iOiJVTktOT1dOIiwieXVpZCI6IjE2NGRkMWNiZjgwY2I1OWE4ZjJmNTQxY2Q2ZjY3MjIxIn0.rcmZrEKl0_FzivsS2U_14sm5qNULAj5jad99y67yu6E",
-  client_token: MCuuid,
-  uuid: "230583ff9c374626870df2d53276e72d",
-  name: "LolouTheFox"
-}
-let opts = {
-    clientPackage: null,
-    // For production launchers, I recommend not passing 
-    // the getAuth function through the authorization field and instead
-    // handling authentication outside before you initialize
-    // MCLC so you can handle auth based errors and validation!
-    authorization: user,
-    root: "./minecraft",
-    checkFiles:true,
-    version: {
-        number: "1.19",
-        type: "release"
-    },
-    memory: {
-        max: "6G",
-        min: "4G"
-    }
-}
-
-app.get("/api/v1/launch/:versionname", (req, res)=>{
-  launcher.launch(opts);
-});
-
-launcher.on('debug', (e) => console.log("[DEBUG]" + e));
-launcher.on('data', (e) => console.log("[DATA]" + e));
-launcher.on('error', (e) => console.log("[ERROR]" + e));
-launcher.on('download-status', (e) => {
-  console.log("[Downloading " + e.type + "]", "[" + e.name + "]", Math.round(e.current/e.total*100));
-});
-launcher.on('verification-status', (e) => {
-  console.log("[Checking " + e.name + "]", Math.round(e.current/e.total*100));
-});
-launcher.on('launch', (e) => {
-  console.log("[MINECRAFT]", "launching Minecraft");
 });
