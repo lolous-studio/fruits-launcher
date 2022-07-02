@@ -1,10 +1,13 @@
 const axios = require('axios');
 const express = require('express');
 const fs = require('fs');
+require('dotenv').config();
 const app = express();
 const port = 4000;
 
-
+const app_id = process.env.APP_ID;
+const app_secret = process.env.APP_SECRET;
+const app_id_secret = process.env.APP_ID_SECRET;
 // const redirect_uri = "http://localhost:3000/redirect";
 const redirect_uri = "https://fruits.lolous.studio/redirect";
 
