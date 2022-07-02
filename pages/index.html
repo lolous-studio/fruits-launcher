@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>LesFruits - Minecraft Launcher</title>
+	<title>FruitsMC - Minecraft Launcher</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -118,6 +118,7 @@
 		}
 		.top-nav i{
 			font-size: 25px;
+			cursor: pointer;
 		}
 		h1{
 			margin-bottom: 25px;
@@ -416,21 +417,37 @@
 			align-items: center;
 			justify-content: space-between;
 		}
+		.loader{
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 3px;
+			z-index: 9999999;
+		}
+		.loader .status{
+			width: 25%;
+			height: 100%;
+			background-color: dodgerblue;
+			opacity: 0;
+			transition-duration: .5s;
+		}
 	</style>
 </head>
 <body>
+	<div class="loader"><div class="status"></div></div>
 	<div class="app">
 		<div class="left-nav">
 			<h1>FruitsMC</h1>
-			<p class="card active" onclick="switchTab('shop', this)"><i class="ph-storefront"></i>Boutique</p>
-			<p class="card" onclick="switchTab('library', this)"><i class="ph-books"></i>Bibliothèque</p>
-			<p class="card" onclick="switchTab('creaMC', this)"><i class="ph-pencil-circle"></i>CreaMC Engine</p>
+			<p id="tab" class="card active" onclick="switchTab('store', this)"><i class="ph-storefront"></i>Boutique</p>
+			<p id="tab" class="card" onclick="switchTab('library', this)"><i class="ph-books"></i>Bibliothèque</p>
+			<p id="tab" class="card" onclick="switchTab('creaMC', this)"><i class="ph-pencil-circle"></i>CreaMC Engine</p>
 			<h2 class="quick-launch">lancement rapide</h2>
 			<p class="card"><img src="https://www.feed-the-beast.com/img/ftb-avatar-logo.c7da2642.png">FTB Ultimate</p>
 			<p class="card"><img src="https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg">Forge 1.12</p>
 			<p class="card"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU">Minecraft 1.19</p>
 		</div>
-		<div class="right-content tab display" id="shop">
+		<div class="right-content tab display" id="store">
 			<div class="top-nav">
 				<div class="left">
 					<i class="ph-caret-left"></i>
@@ -483,7 +500,7 @@
 				</div>
 			</div>
 
-			<div class="unreachable deleteOnReach" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+			<div class="unreachable deleteOnReach" style="width: 100%; height: calc(100% - 105px); display: flex; align-items: center; justify-content: center; flex-direction: column;">
 				<h1 style="margin: 10px 0;">Oups...</h1>
 				<p style="margin: 0 0 25px 0; opacity: .75; width: 500px; text-align: center;">Looks like Mc-Link isn't installed or running. Run Mc-Link or if you don't have it yet:</p>
 				<button class="accent-btn" style="margin-top: 0;"><i class="ph-download-simple"></i>Download MC-Link</button>
@@ -492,8 +509,23 @@
 
 		<div class="right-content tab" id="creaMC">
 		</div>
+		<div class="right-content tab" id="browser"></div>
 	</div>
 	<script type="text/javascript">
+		const urlParams = new URLSearchParams(window.location.search);
+		if (urlParams.get('page')) {
+			tabId = urlParams.get('page');
+			let tabs = ['store', 'library', 'creaMC'];
+			document.querySelector(".left-nav .active").classList.remove("active");
+			document.querySelectorAll("#tab")[tabs.indexOf(tabId)].classList.add('active');
+			document.querySelector(".display").classList.remove("display");
+			document.querySelector("#" + tabId).classList.add("display");
+			window.history.pushState({}, ("FruitsMC - " + tabId), ("/" + tabId));
+		}
+		if (urlParams.get('storepage')) {
+			openLinkInApp(('/browseAPI/store/' + urlParams.get('storepage')), 'store', urlParams.get('storepage'));
+		}
+
 		function httpGetAsync(theUrl, callback) {
 		    var xmlHttp = new XMLHttpRequest();
 		    xmlHttp.onreadystatechange = function() { 
@@ -502,6 +534,60 @@
 		    }
 		    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
 		    xmlHttp.send(null);
+		}
+
+		var maxSrc = 0;
+		var actualSrc = 0;
+		function initLoad(newMaxSrc){
+			maxSrc = newMaxSrc;
+			actualSrc = 0;
+			document.querySelector(".loader .status").style.opacity = 1;
+			document.querySelector(".loader .status").style.width = "50px";
+		}
+		function setLoad(nbSrc){
+			actualSrc = nbSrc;
+			document.querySelector(".loader .status").style.width = ((actualSrc/maxSrc)*100)+"%";
+		}
+		function srcDoneLoad(){
+			actualSrc++;
+			console.log(actualSrc,maxSrc);
+			document.querySelector(".loader .status").style.width = ((actualSrc/maxSrc)*100)+"%";
+			if (((actualSrc/maxSrc)*100) >= 100) {
+				setTimeout(()=>{
+					document.querySelector(".loader .status").style.opacity = 0;
+				}, 500);
+				setTimeout(()=>{
+					document.querySelector(".loader .status").style.width = "50px";
+				}, 1000)
+			}
+		}
+		initLoad(2);
+
+		function goHome(){
+			initLoad(1);
+			document.querySelector(".left-nav .active").classList.remove('active');
+			document.querySelectorAll("#tab")[0].classList.add('active');
+			document.querySelector(".display").classList.remove("display");
+			document.querySelector("#store").classList.add("display");
+			window.history.pushState({}, ("FruitsMC - Minecraft Launcher"), ("/store"));
+			srcDoneLoad();
+		}
+
+		function openLinkInApp(link, asTab, versionID){
+			initLoad(3);
+			let tabs = ['store', 'library', 'creaMC'];
+			document.querySelector(".left-nav .active").classList.remove('active');
+			document.querySelectorAll("#tab")[tabs.indexOf(asTab)].classList.add('active');
+			window.history.pushState({}, ("Store - " + versionID), ("/store/" + versionID));
+			srcDoneLoad();
+			httpGetAsync(link, (body)=>{
+				srcDoneLoad();
+				document.querySelector(".display").classList.remove("display");
+				document.querySelector('#browser').innerHTML = `<div class="top-nav"><div class="left"><i onclick="goHome()" class="ph-caret-left"></i><input type="text" placeholder="Rechercher dans la boutique"></div><div class="right"><button class="accent-btn deleteOnReach" style="margin-top: 0;"><i class="ph-download-simple"></i>Download MC-Link</button><button class="thrd-btn deleteOnLoggedIn" style="margin-top: 0;" id="js-signin-btn"><img style="margin-right: 15px; height: 25px;" src="https://docs.microsoft.com/en-us/azure/active-directory/develop/media/howto-add-branding-in-azure-ad-apps/ms-symbollockup_mssymbol_19.svg"><p>Sign in with Microsoft</p></button><button class="showOnLoggedIn thrd-btn" id="userProfile" style="margin-top: 0;"></button></div></div>`;
+				document.querySelector("#browser").innerHTML += body;
+				document.querySelector("#browser").classList.add("display");
+				srcDoneLoad();
+			});
 		}
 
 		if (localStorage.MCtoken && localStorage.pseudo && localStorage.pfp) {
@@ -521,7 +607,7 @@
 			body.forEach((elem, index, arr)=>{
 				if (index < 6) {
 					document.querySelector("#freeContent").innerHTML += `<div class="app-container">
-						<div class="application" style="background-image: url('${elem.banner}');">
+						<div class="application" style="background-image: url('${elem.banner}');" onclick="openLinkInApp('/browseAPI/store/${elem.versionID}', 'store', '${elem.versionID}')">
 							<img src="${elem.logo}">
 							<div class="hover"></div>
 						</div>
@@ -530,6 +616,7 @@
 					</div>`;
 				}
 			});
+			srcDoneLoad();
 		});
 
 		httpGetAsync("http://localhost:1992", (data)=>{
@@ -543,6 +630,7 @@
 			elem.classList.add("active");
 			document.querySelector(".display").classList.remove("display");
 			document.querySelector("#" + tabId).classList.add("display");
+			window.history.pushState({}, ("FruitsMC - " + tabId), ("/" + tabId));
 		}
 
 		let banners = [];
@@ -550,7 +638,7 @@
 			body = JSON.parse(body);
 			banners = body;
 
-			document.querySelector(".banner").style.backgroundImage = `url(${body[0].banner})`;
+			document.querySelector(".banner").style.backgroundImage = `url('${body[0].banner}')`;
 			document.querySelector("#bannerGameState").innerText = body[0].gameStat;
 			document.querySelector("#bannerLogo").src = body[0].logo;
 			document.querySelector("#bannerDescription").innerText = body[0].description;
@@ -558,9 +646,10 @@
 
 			bannersList = document.querySelectorAll(".banners-list .card");
 			bannersList.forEach((elem, index, arr)=>{
-				console.log(body[index]);
+				// console.log(body[index]);
 				elem.innerHTML = `<img src="${body[index].icon}">${body[index].title}`;
 			});
+			srcDoneLoad();
 		});
 
 		function showBanner(nb, elem){
@@ -573,7 +662,7 @@
 			setTimeout(()=>{
 				document.querySelector("#bannerLogo").style.transform = "translateY(-10px)";
 				document.querySelector(".header .banner").style.transform = "translateY(-10px)";
-				document.querySelector(".banner").style.backgroundImage = `url(${banners[nb].banner})`;
+				document.querySelector(".banner").style.backgroundImage = `url('${banners[nb].banner}')`;
 				document.querySelector("#bannerGameState").innerText = banners[nb].gameStat;
 				document.querySelector("#bannerLogo").src = banners[nb].logo;
 				document.querySelector("#bannerDescription").innerText = banners[nb].description;

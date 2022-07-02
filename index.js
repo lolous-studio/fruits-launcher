@@ -1,11 +1,10 @@
 const axios = require('axios');
 const express = require('express');
+const fs = require('fs');
 const app = express();
 const port = 4000;
 
-const app_id = "19b827cd-b22d-4417-9e99-38c4bfc5e256";
-const app_secret = "Qsn8Q~5XPat5NyPTq1zEitudVKl9CuTvZu0dPbY3";
-const app_id_secret = "ae388251-a757-41b4-95b1-a88e3def402d";
+
 // const redirect_uri = "http://localhost:3000/redirect";
 const redirect_uri = "https://fruits.lolous.studio/redirect";
 
@@ -124,24 +123,34 @@ app.get('/redirect', (req, res) => {
     });
 });
 
+let db = {
+  "forge_1.12.2":{versionID:"forge_1.12.2", title:"Forge 1.12.2", btnText:"Jouer gratuitement", banner:"https://i.pinimg.com/originals/12/f2/d8/12f2d843f320e42a7712bb806dc20970.jpg", logo:"https://files.minecraftforge.net/static/images/logo.svg", icon:"https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg", description:"Customize how your minecraft look and behave with the help of forge! Install mods to make your Minecraft feel like yours.", gameStat:"disponible et gratuit"},
+  "minecraft_1.19":{versionID:"minecraft_1.19", title:"Minecraft 1.19", btnText:"Jouer gratuitement", banner:"/thumbs/minecraft 1.19.jpg", logo:"https://www.minecraft-france.fr/wp-content/uploads/2021/10/Minecraft_1.19_Wild_Update_Logo-768x218.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Lancez-vous dans l’aventure, flânez sans but ou cherchez les nouveautés dans The Wild Update ! Une infinité de choix s’offrent à vous.", gameStat:"nouveautée gratuite"},
+  "minecraft_1.18":{versionID:"minecraft_1.18", title:"Minecraft 1.18", btnText:"Jouer gratuitement", banner:"https://upload.fr-minecraft.net/images/frminecraft/fr-minecraft_RFBY_caves-cliffs-update-part-i-official-trailer-mp4-snapshot-00-.jpg", logo:"https://minecraft.fr/wp-content/uploads/2020/06/minecraft-1-17-cave-grotte-falaise.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Découvrez des montagnes, des caves et des biomes plus grands, ainsi qu’une hauteur de monde augmentée et qu’une mise à jour de la génération de terrain dans la mise à jour Cavernes et falaises.", gameStat:"disponible et gratuit"},
+  "minecraft_1.12":{versionID:"minecraft_1.12", title:"Minecraft 1.12", btnText:"Jouer gratuitement", banner:"https://minecraft.fr/wp-content/uploads/2017/06/b1c06cfe1e13734b3da8912f424e75ac-mc112_header.png", logo:"/logos/minecraft 1.12.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Sunlight yellow, chili red, royal blue, midnight black, grass green, lilac purple, true lime, fresh salmon, hot cappuccino, pretty much all of the off-white, annoying cyan, alpha-tested magenta, that brown-greenish barf shade... the World of Color update is here!", gameStat:"disponible et gratuit"},
+  "forge_1.13":{versionID:"forge_1.13", title:"Forge 1.13", btnText:"Jouer gratuitement", banner:"https://www.teahub.io/photos/full/41-419000_minecraft-seus-shader.jpg", logo:"https://files.minecraftforge.net/static/images/logo.svg", icon:"https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg", description:"Customize how your minecraft look and behave with the help of forge! Install mods to make your Minecraft feel like yours.", gameStat:"disponible et gratuit"},
+  "forge_1.12.2":{versionID:"forge_1.12.2", title:"Forge 1.12.2", btnText:"Jouer gratuitement", banner:"https://i.pinimg.com/originals/12/f2/d8/12f2d843f320e42a7712bb806dc20970.jpg", logo:"https://files.minecraftforge.net/static/images/logo.svg", icon:"https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg", description:"Customize how your minecraft look and behave with the help of forge! Install mods to make your Minecraft feel like yours.", gameStat:"disponible et gratuit"},
+  "ftb_ultimate":{versionID:"ftb_ultimate", title:"FTB Ultimate", btnText:"Jouer gratuitement", banner:"https://wallpaper.dog/large/17064778.png", logo:"https://www.feed-the-beast.com/img/logo_ftb.417506fa.png", icon:"https://www.feed-the-beast.com/img/ftb-avatar-logo.c7da2642.png", description:"With a perfect blend of tech and magic, Ultimate provid millions of players the opportunity to play either solo or with friends and explore new worlds and dimensions as well as build massive bases filled with technological and magical constructs.", gameStat:"disponible et gratuit"},
+}
+
 app.get('/api/v1/store/banners', (req, res) => {
   res.send([
-    {title:"Forge 1.12", btnText:"Jouer gratuitement", banner:"https://i.pinimg.com/originals/12/f2/d8/12f2d843f320e42a7712bb806dc20970.jpg", logo:"https://files.minecraftforge.net/static/images/logo.svg", icon:"https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg", description:"Customize how your minecraft look and behave with the help of forge! Install mods to make your Minecraft feel like yours.", gameStat:"disponible et gratuit"},
-    {title:"Minecraft 1.19", btnText:"Jouer gratuitement", banner:"https://minecraft-tutos.com/wp-content/uploads/2022/03/concept-art-minecraft-biome-swamp-mangrove-1024x475.jpeg", logo:"https://www.minecraft-france.fr/wp-content/uploads/2021/10/Minecraft_1.19_Wild_Update_Logo-768x218.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Lancez-vous dans l’aventure, flânez sans but ou cherchez les nouveautés dans The Wild Update ! Une infinité de choix s’offrent à vous.", gameStat:"Nouveauté gratuite"},
-    {title:"Forge 1.13", btnText:"Jouer gratuitement", banner:"https://www.teahub.io/photos/full/41-419000_minecraft-seus-shader.jpg", logo:"https://files.minecraftforge.net/static/images/logo.svg", icon:"https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg", description:"Customize how your minecraft look and behave with the help of forge! Install mods to make your Minecraft feel like yours.", gameStat:"populaire et gratuit"},
-    {title:"FTB Ultimate", btnText:"Jouer gratuitement", banner:"https://wallpaper.dog/large/17064778.png", logo:"https://www.feed-the-beast.com/img/logo_ftb.417506fa.png", icon:"https://www.feed-the-beast.com/img/ftb-avatar-logo.c7da2642.png", description:"With a perfect blend of tech and magic, Ultimate provid millions of players the opportunity to play either solo or with friends and explore new worlds and dimensions as well as build massive bases filled with technological and magical constructs.", gameStat:"disponible et gratuit"},
-    {title:"Minecraft 1.18", btnText:"Jouer gratuitement", banner:"https://upload.fr-minecraft.net/images/frminecraft/fr-minecraft_RFBY_caves-cliffs-update-part-i-official-trailer-mp4-snapshot-00-.jpg", logo:"https://minecraft.fr/wp-content/uploads/2020/06/minecraft-1-17-cave-grotte-falaise.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Découvrez des montagnes, des caves et des biomes plus grands, ainsi qu’une hauteur de monde augmentée et qu’une mise à jour de la génération de terrain dans la mise à jour Cavernes et falaises.", gameStat:"disponible et gratuit"},
+    {versionID:"forge_1.12.2", title:"Forge 1.12.2", btnText:"Jouer gratuitement", banner:"https://i.pinimg.com/originals/12/f2/d8/12f2d843f320e42a7712bb806dc20970.jpg", logo:"https://files.minecraftforge.net/static/images/logo.svg", icon:"https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg", description:"Customize how your minecraft look and behave with the help of forge! Install mods to make your Minecraft feel like yours.", gameStat:"disponible et gratuit"},
+    {versionID:"minecraft_1.19", title:"Minecraft 1.19", btnText:"Jouer gratuitement", banner:"/thumbs/minecraft 1.19.jpg", logo:"https://www.minecraft-france.fr/wp-content/uploads/2021/10/Minecraft_1.19_Wild_Update_Logo-768x218.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Lancez-vous dans l’aventure, flânez sans but ou cherchez les nouveautés dans The Wild Update ! Une infinité de choix s’offrent à vous.", gameStat:"nouveautée gratuite"},
+    {versionID:"forge_1.13", title:"Forge 1.13", btnText:"Jouer gratuitement", banner:"https://www.teahub.io/photos/full/41-419000_minecraft-seus-shader.jpg", logo:"https://files.minecraftforge.net/static/images/logo.svg", icon:"https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg", description:"Customize how your minecraft look and behave with the help of forge! Install mods to make your Minecraft feel like yours.", gameStat:"populaire et gratuit"},
+    {versionID:"ftb_ultimate", title:"FTB Ultimate", btnText:"Jouer gratuitement", banner:"https://wallpaper.dog/large/17064778.png", logo:"https://www.feed-the-beast.com/img/logo_ftb.417506fa.png", icon:"https://www.feed-the-beast.com/img/ftb-avatar-logo.c7da2642.png", description:"With a perfect blend of tech and magic, Ultimate provid millions of players the opportunity to play either solo or with friends and explore new worlds and dimensions as well as build massive bases filled with technological and magical constructs.", gameStat:"disponible et gratuit"},
+    {versionID:"minecraft_1.18", title:"Minecraft 1.18", btnText:"Jouer gratuitement", banner:"https://upload.fr-minecraft.net/images/frminecraft/fr-minecraft_RFBY_caves-cliffs-update-part-i-official-trailer-mp4-snapshot-00-.jpg", logo:"https://minecraft.fr/wp-content/uploads/2020/06/minecraft-1-17-cave-grotte-falaise.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Découvrez des montagnes, des caves et des biomes plus grands, ainsi qu’une hauteur de monde augmentée et qu’une mise à jour de la génération de terrain dans la mise à jour Cavernes et falaises.", gameStat:"disponible et gratuit"},
   ]);
 });
 
 app.get('/api/v1/store/freeContent', (req, res) => {
   res.send([
-    {title:"Minecraft 1.19", btnText:"Jouer gratuitement", banner:"https://minecraft-tutos.com/wp-content/uploads/2022/03/concept-art-minecraft-biome-swamp-mangrove-1024x475.jpeg", logo:"https://www.minecraft-france.fr/wp-content/uploads/2021/10/Minecraft_1.19_Wild_Update_Logo-768x218.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Lancez-vous dans l’aventure, flânez sans but ou cherchez les nouveautés dans The Wild Update ! Une infinité de choix s’offrent à vous.", gameStat:"disponible et gratuit"},
-    {title:"Minecraft 1.18", btnText:"Jouer gratuitement", banner:"https://upload.fr-minecraft.net/images/frminecraft/fr-minecraft_RFBY_caves-cliffs-update-part-i-official-trailer-mp4-snapshot-00-.jpg", logo:"https://minecraft.fr/wp-content/uploads/2020/06/minecraft-1-17-cave-grotte-falaise.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Découvrez des montagnes, des caves et des biomes plus grands, ainsi qu’une hauteur de monde augmentée et qu’une mise à jour de la génération de terrain dans la mise à jour Cavernes et falaises.", gameStat:"disponible et gratuit"},
-    {title:"Minecraft 1.12", btnText:"Jouer gratuitement", banner:"https://minecraft.fr/wp-content/uploads/2017/06/b1c06cfe1e13734b3da8912f424e75ac-mc112_header.png", logo:"https://upload.wikimedia.org/wikipedia/fr/thumb/0/03/Minecraft_Logo.svg/1200px-Minecraft_Logo.svg.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Sunlight yellow, chili red, royal blue, midnight black, grass green, lilac purple, true lime, fresh salmon, hot cappuccino, pretty much all of the off-white, annoying cyan, alpha-tested magenta, that brown-greenish barf shade... the World of Color update is here!", gameStat:"disponible et gratuit"},
-    {title:"Forge 1.13", btnText:"Jouer gratuitement", banner:"https://www.teahub.io/photos/full/41-419000_minecraft-seus-shader.jpg", logo:"https://files.minecraftforge.net/static/images/logo.svg", icon:"https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg", description:"Customize how your minecraft look and behave with the help of forge! Install mods to make your Minecraft feel like yours.", gameStat:"disponible et gratuit"},
-    {title:"Forge 1.12", btnText:"Jouer gratuitement", banner:"https://i.pinimg.com/originals/12/f2/d8/12f2d843f320e42a7712bb806dc20970.jpg", logo:"https://files.minecraftforge.net/static/images/logo.svg", icon:"https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg", description:"Customize how your minecraft look and behave with the help of forge! Install mods to make your Minecraft feel like yours.", gameStat:"disponible et gratuit"},
-    {title:"FTB Ultimate", btnText:"Jouer gratuitement", banner:"https://wallpaper.dog/large/17064778.png", logo:"https://www.feed-the-beast.com/img/logo_ftb.417506fa.png", icon:"https://www.feed-the-beast.com/img/ftb-avatar-logo.c7da2642.png", description:"With a perfect blend of tech and magic, Ultimate provid millions of players the opportunity to play either solo or with friends and explore new worlds and dimensions as well as build massive bases filled with technological and magical constructs.", gameStat:"disponible et gratuit"},
+    {versionID:"minecraft_1.19", title:"Minecraft 1.19", btnText:"Jouer gratuitement", banner:"/thumbs/minecraft 1.19.jpg", logo:"https://www.minecraft-france.fr/wp-content/uploads/2021/10/Minecraft_1.19_Wild_Update_Logo-768x218.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Lancez-vous dans l’aventure, flânez sans but ou cherchez les nouveautés dans The Wild Update ! Une infinité de choix s’offrent à vous.", gameStat:"nouveautée gratuite"},
+    {versionID:"minecraft_1.18", title:"Minecraft 1.18", btnText:"Jouer gratuitement", banner:"https://upload.fr-minecraft.net/images/frminecraft/fr-minecraft_RFBY_caves-cliffs-update-part-i-official-trailer-mp4-snapshot-00-.jpg", logo:"https://minecraft.fr/wp-content/uploads/2020/06/minecraft-1-17-cave-grotte-falaise.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Découvrez des montagnes, des caves et des biomes plus grands, ainsi qu’une hauteur de monde augmentée et qu’une mise à jour de la génération de terrain dans la mise à jour Cavernes et falaises.", gameStat:"disponible et gratuit"},
+    {versionID:"minecraft_1.12", title:"Minecraft 1.12", btnText:"Jouer gratuitement", banner:"https://minecraft.fr/wp-content/uploads/2017/06/b1c06cfe1e13734b3da8912f424e75ac-mc112_header.png", logo:"/logos/minecraft 1.12.png", icon:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQne0t-5uaF_3jR5ewomb8M_XfWO0qds5Qi97Tzh0hZZS7JSVWIbNZKPscUOI1FEyplpjM&usqp=CAU", description:"Sunlight yellow, chili red, royal blue, midnight black, grass green, lilac purple, true lime, fresh salmon, hot cappuccino, pretty much all of the off-white, annoying cyan, alpha-tested magenta, that brown-greenish barf shade... the World of Color update is here!", gameStat:"disponible et gratuit"},
+    {versionID:"forge_1.13", title:"Forge 1.13", btnText:"Jouer gratuitement", banner:"https://www.teahub.io/photos/full/41-419000_minecraft-seus-shader.jpg", logo:"https://files.minecraftforge.net/static/images/logo.svg", icon:"https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg", description:"Customize how your minecraft look and behave with the help of forge! Install mods to make your Minecraft feel like yours.", gameStat:"disponible et gratuit"},
+    {versionID:"forge_1.12.2", title:"Forge 1.12.2", btnText:"Jouer gratuitement", banner:"https://i.pinimg.com/originals/12/f2/d8/12f2d843f320e42a7712bb806dc20970.jpg", logo:"https://files.minecraftforge.net/static/images/logo.svg", icon:"https://pbs.twimg.com/profile_images/778706890914095109/fhMDH9o6_400x400.jpg", description:"Customize how your minecraft look and behave with the help of forge! Install mods to make your Minecraft feel like yours.", gameStat:"disponible et gratuit"},
+    {versionID:"ftb_ultimate", title:"FTB Ultimate", btnText:"Jouer gratuitement", banner:"https://wallpaper.dog/large/17064778.png", logo:"https://www.feed-the-beast.com/img/logo_ftb.417506fa.png", icon:"https://www.feed-the-beast.com/img/ftb-avatar-logo.c7da2642.png", description:"With a perfect blend of tech and magic, Ultimate provid millions of players the opportunity to play either solo or with friends and explore new worlds and dimensions as well as build massive bases filled with technological and magical constructs.", gameStat:"disponible et gratuit"},
   ]);
 });
 
@@ -231,6 +240,47 @@ function checkMinecraftOwnership(MC_access_token, callback){
     });
 };
 
+
+
+
+
+
+app.get('/browseAPI/store/:versionID', (req, res) => {
+  fs.readFile('./pages/storepage.html', 'utf8', (err, data) => {
+    if (err) {console.error(err);return;}
+    data = data.replaceAll('{{title}}', db[req.params.versionID].title);
+    data = data.replaceAll('{{bannerSrc}}', db[req.params.versionID].banner);
+    data = data.replaceAll('{{iconSrc}}', db[req.params.versionID].icon);
+    data = data.replaceAll('{{logoSrc}}', db[req.params.versionID].logo);
+    data = data.replaceAll('{{description}}', db[req.params.versionID].description);
+    data = data.replaceAll('{{gameStat}}', db[req.params.versionID].gameStat);
+    res.send(data);
+  });
+});
+
+app.get('/store', (req, res) => {
+  res.redirect('/');
+});
+
+app.get('/store/:versionID', (req, res) => {
+  res.redirect('/?storepage=' + req.params.versionID);
+});
+
+app.get('/library', (req, res) => {
+  res.redirect('/?page=library');
+});
+
+app.get('/creaMC', (req, res) => {
+  res.redirect('/?page=creaMC');
+});
+
+
+
+
+
+
+
+app.use(express.static('public'));
 app.listen(port, () => {
   console.log(`Fruits listening on port ${port}`);
 });
