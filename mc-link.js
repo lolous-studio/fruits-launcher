@@ -32,12 +32,15 @@ let versions = {
 }
 
 MCuuid = uuidv4();
-const user = {
-  access_token: "",
-  client_token: MCuuid,
-  uuid: "",
-  name: ""
-}
+
+app.get("/setUserData", (req, res)=>{
+  const user = {
+    access_token: req.query.access_token,
+    client_token: MCuuid,
+    uuid: req.query.uuid,
+    name: req.query.name
+  }
+});
 
 app.get("/api/v1/launch/:versionID", (req, res)=>{
   versionID = req.params.versionID;
